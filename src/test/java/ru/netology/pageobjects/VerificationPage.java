@@ -7,16 +7,16 @@ import ru.netology.userdata.UserData;
 import static com.codeborne.selenide.Selenide.$;
 
 public class VerificationPage {
-    private SelenideElement codeField = $("[name=code]");
-    private SelenideElement verifyButton = $("[data-test-id=action-verify]");
+    private final SelenideElement CODE_FIELD = $("[name=code]");
+    private final SelenideElement VERIFY_BUTTON = $("[data-test-id=action-verify]");
 
     public VerificationPage() {
-        codeField.waitUntil(Condition.visible, 15000);
+        CODE_FIELD.waitUntil(Condition.visible, 15000);
     }
 
     public DashboardPage validVerify(UserData.VerificationCode verificationCode) {
-        codeField.setValue(verificationCode.getCode());
-        verifyButton.click();
+        CODE_FIELD.setValue(verificationCode.getAuthCode());
+        VERIFY_BUTTON.click();
         return new DashboardPage();
     }
 }

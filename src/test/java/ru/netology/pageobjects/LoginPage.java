@@ -6,14 +6,14 @@ import ru.netology.userdata.UserData;
 import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {
-    private SelenideElement loginField = $("[name=login]");
-    private SelenideElement passwordField = $("[name=password]");
-    private SelenideElement loginButton = $("[data-test-id=action-login]");
+    private final SelenideElement LOGIN_FIELD = $("[name=login]");
+    private final SelenideElement PASSWORD_FIELD = $("[name=password]");
+    private final SelenideElement LOGIN_BUTTON = $("[data-test-id=action-login]");
 
-        public VerificationPage validLogin(UserData.AuthInfo authInfo) {
-        loginField.setValue(authInfo.getLogin());
-        passwordField.setValue(authInfo.getPassword());
-        loginButton.click();
+    public VerificationPage validLogin(UserData.AuthInfo authInfo) {
+        LOGIN_FIELD.setValue(authInfo.getLogin());
+        PASSWORD_FIELD.setValue(authInfo.getPassword());
+        LOGIN_BUTTON.click();
         return new VerificationPage();
     }
 }

@@ -11,8 +11,8 @@ public class UserData {
 
     @Value
     public static class AuthInfo {
-        private String login;
-        private String password;
+        String login;
+        String password;
     }
 
     public static AuthInfo getAuthInfo() {
@@ -21,7 +21,7 @@ public class UserData {
 
     @Value
     public static class VerificationCode {
-        private String code;
+        String authCode;
     }
 
     public static VerificationCode getVerificationCode() {
@@ -29,15 +29,14 @@ public class UserData {
     }
 
     @Value
-    public static class CardInfo {
-        private String cardNumber;
-        private String cardBalance;
+    public static class Card {
+        String cardNumber;
     }
 
-    public static List<CardInfo> getCardInfo() {
-        List<CardInfo> cards = new ArrayList<>();
-        cards.add(new CardInfo("5559 0000 0000 0001", "10000"));
-        cards.add(new CardInfo("5559 0000 0000 0002", "10000"));
+    public static List<Card> getCardInfo() {
+        List<Card> cards = new ArrayList<>();
+        cards.add(new Card("5559 0000 0000 0001"));
+        cards.add(new Card("5559 0000 0000 0002"));
         return cards;
     }
 }
