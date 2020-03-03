@@ -1,7 +1,10 @@
 package ru.netology.test;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import ru.netology.pageobjects.DashboardPage;
@@ -25,7 +28,8 @@ public class fundsTransferTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/cardsIndexes.csv", numLinesToSkip = 1)
+    @DisplayName("Перевод с карты на карту в пределах остатка счета")
+    @CsvFileSource(resources = "/validTransferParams.csv", numLinesToSkip = 1)
     void shouldTransferFundsBetweenCards(int recipientIndex,
                                          int senderIndex,
                                          String amount,
@@ -42,5 +46,17 @@ public class fundsTransferTest {
         int diffSenderCard = senderCardBalanceBeforeTransfer - Integer.parseInt(amount);
         assertEquals(recipientCardBalanceAfterTransfer, diffRecipientCard);
         assertEquals(senderCardBalanceAfterTransfer, diffSenderCard);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Перевод суммы превышающей остаток счета")
+    @CsvFileSource(resources = "/invalidTransferParams.csv", numLinesToSkip = 1)
+    void shouldNotifyTransferAmountExceedsAvailableFunds(int recipientIndex, int senderIndex, String senderCardNumber) {
+        int senderCardBalanceBeforeTransfer = dashboardPage.getBalance(senderCardNumber);
+        val fundsTransferPage = dashboardPage.replenishCardAccount(recipientIndex);
+        val cards = UserData.getCardInfo();
+        String amount = String.valueOf(senderCardBalanceBeforeTransfer * 2);
+        SelenideElement ERROR_NOTIFICATION = fundsTransferPage.invalidTransferFunds(cards, amount, senderIndex);
+        ERROR_NOTIFICATION.shouldBe(Condition.visible);
     }
 }
