@@ -28,17 +28,17 @@ public class fundsTransferTest {
     }
 
     @ParameterizedTest
-    @DisplayName("Перевод с карты на карту в пределах остатка счета")
+    @DisplayName("Перевод с карты на карту половины остатка счета")
     @CsvFileSource(resources = "/validTransferParams.csv", numLinesToSkip = 1)
     void shouldTransferFundsBetweenCards(int recipientIndex,
                                          int senderIndex,
-                                         String amount,
                                          String recipientCardNumber,
                                          String senderCardNumber) {
         int recipientCardBalanceBeforeTransfer = dashboardPage.getBalance(recipientCardNumber);
         int senderCardBalanceBeforeTransfer = dashboardPage.getBalance(senderCardNumber);
         val fundsTransferPage = dashboardPage.replenishCardAccount(recipientIndex);
         val cards = UserData.getCardInfo();
+        String amount = String.valueOf(senderCardBalanceBeforeTransfer / 2);
         dashboardPage = fundsTransferPage.validTransferFunds(cards, amount, senderIndex);
         int recipientCardBalanceAfterTransfer = dashboardPage.getBalance(recipientCardNumber);
         int senderCardBalanceAfterTransfer = dashboardPage.getBalance(senderCardNumber);
