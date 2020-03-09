@@ -14,7 +14,7 @@ import ru.netology.userdata.UserData;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class fundsTransferTest {
+public class FundsTransferTest {
 
     private DashboardPage dashboardPage;
 
