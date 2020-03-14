@@ -1,7 +1,5 @@
 package ru.netology.test;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +13,6 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FundsTransferTest {
-
     private DashboardPage dashboardPage;
 
     @BeforeEach
@@ -34,16 +31,16 @@ public class FundsTransferTest {
                                          int senderIndex,
                                          String recipientCardNumber,
                                          String senderCardNumber) {
-        int recipientCardBalanceBeforeTransfer = dashboardPage.getBalance(recipientCardNumber);
-        int senderCardBalanceBeforeTransfer = dashboardPage.getBalance(senderCardNumber);
+        val recipientCardBalanceBeforeTransfer = dashboardPage.getBalance(recipientCardNumber);
+        val senderCardBalanceBeforeTransfer = dashboardPage.getBalance(senderCardNumber);
         val fundsTransferPage = dashboardPage.replenishCardAccount(recipientIndex);
         val cards = UserData.getCardInfo();
         String amount = String.valueOf(senderCardBalanceBeforeTransfer / 2);
         dashboardPage = fundsTransferPage.validTransferFunds(cards, amount, senderIndex);
-        int recipientCardBalanceAfterTransfer = dashboardPage.getBalance(recipientCardNumber);
-        int senderCardBalanceAfterTransfer = dashboardPage.getBalance(senderCardNumber);
-        int diffRecipientCard = recipientCardBalanceBeforeTransfer + Integer.parseInt(amount);
-        int diffSenderCard = senderCardBalanceBeforeTransfer - Integer.parseInt(amount);
+        val recipientCardBalanceAfterTransfer = dashboardPage.getBalance(recipientCardNumber);
+        val senderCardBalanceAfterTransfer = dashboardPage.getBalance(senderCardNumber);
+        val diffRecipientCard = recipientCardBalanceBeforeTransfer + Integer.parseInt(amount);
+        val diffSenderCard = senderCardBalanceBeforeTransfer - Integer.parseInt(amount);
         assertEquals(recipientCardBalanceAfterTransfer, diffRecipientCard);
         assertEquals(senderCardBalanceAfterTransfer, diffSenderCard);
     }
@@ -56,7 +53,7 @@ public class FundsTransferTest {
         val fundsTransferPage = dashboardPage.replenishCardAccount(recipientIndex);
         val cards = UserData.getCardInfo();
         String amount = String.valueOf(senderCardBalanceBeforeTransfer * 2);
-        SelenideElement ERROR_NOTIFICATION = fundsTransferPage.invalidTransferFunds(cards, amount, senderIndex);
-        ERROR_NOTIFICATION.shouldBe(Condition.visible);
+        fundsTransferPage.invalidTransferFunds(cards, amount, senderIndex);
+        fundsTransferPage.assertErrorNotificationIsVisible();
     }
 }

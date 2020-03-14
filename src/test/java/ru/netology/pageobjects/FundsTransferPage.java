@@ -27,10 +27,12 @@ public class FundsTransferPage {
         return new DashboardPage();
     }
 
-    public SelenideElement invalidTransferFunds(List<UserData.Card> cards, String amount, int senderIndex) {
+    public void invalidTransferFunds(List<UserData.Card> cards, String amount, int senderIndex) {
         AMOUNT_FIELD.setValue(amount);
         FORM_CARD_FIELD.setValue(cards.get(senderIndex).getCardNumber());
         TRANSFER_BUTTON.click();
-        return ERROR_NOTIFICATION;
+    }
+    public void assertErrorNotificationIsVisible() {
+        ERROR_NOTIFICATION.shouldBe(Condition.visible);
     }
 }
